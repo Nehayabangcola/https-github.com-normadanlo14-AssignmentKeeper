@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AssignmentKeeper.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout>
+          
+                <Label HorizontalOptions="Center" FontSize="32" Text="Student Schedule"/>
+
+           
+                <Entry Placeholder="Email" x:Name="email"/>
+
+          
+                <Entry Placeholder="Password"  x:Name="password"/>
+
+            
+           
+                <Button Text="LogIn" Clicked="Button_Clicked"/>
+            
+            
+                <Button Text="Create Account" Clicked="Button_Clicked_1"/>
+
+            
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
