@@ -19,7 +19,7 @@ namespace Assignment1.Model
         public string Password { get; set; }
 
         //add or create
-        public async Task<bool> AddUser(string ass ,string fname, string lname, string mail, string pword)
+        public async Task<bool> AddUser(string ass, string fname, string lname, string mail, string pword)
         {
             try
             {
@@ -71,7 +71,50 @@ namespace Assignment1.Model
             }
 
         }
-        public async Task<bool> editdata(string ass, string lname, string fname)
+        public ObservableCollection<Users> GetUserList()
+        {
+            var userlist = client
+                 .Child("Users")
+                .AsObservable<Users>()
+                .AsObservableCollection();
+            return userlist;
+
+        }
+        public async Task<string> Deletedata()
+        {
+            try
+            {
+                await client
+                    .Child($"Users/{key}")
+                    .DeleteAsync();
+                return "removed";
+            }
+            catch (Exception ex)
+            {
+                return " error";
+            }
+        }
+        public async Task<string> GetUserKey(string mail)
+        {
+            try
+            {
+                var getuserkey = (await client.Child("Users").OnceAsync<Users>()).
+                    FirstOrDefault(a => a.Object.Email == mail);
+                if (getuserkey == null) return null;
+
+                firstname = getuserkey.Object.FirstName;
+                lastname = getuserkey.Object.LastName;
+                passowrd = getuserkey.Object.Password;
+
+                return getuserkey?.Key;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        public async Task<bool> editdata(string lname, string fname, string ass)
         {
             try
             {
@@ -84,11 +127,10 @@ namespace Assignment1.Model
                 {
                     Users user = new Users
                     {
-                        Assignment = ass,
                         Email = email,
                         FirstName = fname,
                         LastName = lname,
-                        Password = pass
+                        Assignment = ass
                     };
                     await client.Child("Users").Child(key).PatchAsync(user);
                     client.Dispose();
@@ -103,5 +145,4 @@ namespace Assignment1.Model
             }
         }
     }
-
 }
